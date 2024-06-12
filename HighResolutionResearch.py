@@ -1,8 +1,9 @@
 from PyQt6 import QtCore
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import (QApplication, QDialog, QMainWindow, QMessageBox, QFileDialog, QWidgetAction, QMenuBar,
-                             QGraphicsRectItem, QGraphicsScene, QGraphicsView, QGraphicsPixmapItem, QSizePolicy)
-from PyQt6.QtGui import QBrush, QPainter, QPen, QPixmap, QPolygonF, QImage
+                             QGraphicsRectItem, QGraphicsScene, QGraphicsView, QGraphicsPixmapItem, QSizePolicy, QLabel)
+from PyQt6.QtGui import QBrush, QPainter, QPen, QPixmap, QPolygonF, QImage, QDesktopServices
+from PyQt6.QtWidgets import QWidget
 from ui_HighResolutionResearch import Ui_MainWindow
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
@@ -10,79 +11,60 @@ from imagePreprocessing import *
 import numpy as np
 import sys
 # import qimage2ndarray
+import json
 
-app = QApplication(sys.argv)
-window = QMainWindow()
-ui = Ui_MainWindow()
-ui.setupUi(window)
-window.show()
+class MainWindow(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.ui = Ui_MainWindow()
+        self.ui.setupUi(self)
+        self.ui.action.triggered.connect(self.open_lr_image)
+        self.ui.action_2.triggered.connect(self.open_hr_image)
 
-paths = dict(LR='', HR='')
+    # paths = dict(LR='', HR='')
+    def open_lr_image(self):
+        image_path, _ = QFileDialog.getOpenFileName(self, 'Open Image', '', 'Image Files (*.png *.jpg *.jpeg)')
+        if image_path:
+            self.ui.label_1 = QLabel(self.ui.label_1)
+            self.ui.pixmap = QPixmap(image_path)
+            self.ui.label_1.setPixmap(self.ui.pixmap)
+            self.ui.label_1.setScaledContents(True)
+            self.ui.label_1.resize(480, 480)
+            self.ui.label_1.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+            self.ui.label_1.show()
 
-def openLRImage():
-    image_path, _ = QFileDialog.getOpenFileName()
-    # paths['LR'] = image_path
-    image = open_tiff_image(image_path)
-    # q_image = qimage2ndarray.array2qimage(image)
-    qimage = QImage(image.data, image.shape[1], image.shape[0],
-                    QImage.Format.Format_RGB888)
-    pixmap = QPixmap(qimage)
-    pixmap = pixmap.scaled(320, 320)
-    # ui.label_24.setSizePolicy(QSizePolicy.Policy, QSizePolicy.Policy)
-    ui.label_24.resize(320, 320)
-    ui.label_24.setAlignment(Qt.AlignmentFlag.AlignCenter)
-    ui.label_24.setPixmap(pixmap)
-    ui.label_24.setPixmap(ui.label_24)
+    def open_hr_image(self):
+        image_path, _ = QFileDialog.getOpenFileName(self, 'Open Image', '', 'Image Files (*.png *.jpg *.jpeg)')
+        if image_path:
+            self.ui.label_2 = QLabel(self.ui.label_2)
+            self.ui.pixmap = QPixmap(image_path)
+            self.ui.label_2.setPixmap(self.ui.pixmap)
+            self.ui.label_2.setScaledContents(True)
+            self.ui.label_2.resize(480, 480)
+            self.ui.label_2.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+            self.ui.label_2.show()
 
-    # ui.setCentralWidget(ui.label_24)
-    # ui.show()
-    # print(image)
-    # pixmap = QPixmap.fromImage(image).scaled(320, 320, transformMode=QtCore.Qt.SSmoothTransformation,
-    #                                          aspectRatioMode=QtCore.Qt.AspectRatioMode)
-    #
-    # ui.grphics_scene.clear()
-    # pixmap_item = QGraphicsPixmapItem(pixmap)
-    # ui.graphics_scene.addItem(pixmap_item)
-    # ui.label_24.setScene(ui.graphics_scene)
-    # ui.label_24.setRenderHint(QPainter.RenderHint.Antialiasing)
-    # ui.setCentralWidget(ui.label_24)
-    # ui.resize(pixmap.width(), pixmap.height())
-    # ui.scene = QGraphicsScene()
-    # ui.graphicsView_25.setScene(ui.scene)
-    #
-    # ui.figure = visualize_images(paths['LR'], title='изображения с низким пространственным разрешением')
-    # ui.axes = ui.figure.gca()
-    # ui.canvas = FigureCanvas(ui.figure)
-    # ui.proxy_widget = ui.scene.addWidget(ui.canvas)
-
-# print(paths['LR'], paths['HR'])
-
-def openHRImage():
-    image_path, _ = QFileDialog.getOpenFileName()
-    paths['HR'] = image_path
-    print(paths['LR'], paths['HR'])
-
-ui.action.triggered.connect(openLRImage)
-ui.action_2.triggered.connect(openHRImage)
-print(paths['LR'])
-print(paths['HR'])
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    window = MainWindow()
+    window.show()
+    sys.exit(app.exec())
 
 
-
-
-
-def on_click():
-    selected_methods = dict(BI=False, IHS=False, GS=False, BT=False, WT=False, SR=False)
-    selected_methods['BI'] = ui.checkBox.isChecked()
-    selected_methods['IHS'] = ui.checkBox_2.isChecked()
-    selected_methods['GS'] = ui.checkBox_3.isChecked()
-    selected_methods['BT'] = ui.checkBox_4.isChecked()
-    selected_methods['WT'] = ui.checkBox_5.isChecked()
-    selected_methods['SR'] = ui.checkBox_6.isChecked()
-    print(selected_methods)
-
-
-ui.pushButton.clicked.connect(on_click)
-
-
-sys.exit(app.exec())
+# print(paths['LR'])
+# print(paths['HR'])
+#
+# selected_methods = dict(BI=False, IHS=False, GS=False, BT=False, WT=False, SR=False)
+#
+# def on_click():
+#     selected_methods['BI'] = ui.checkBox.isChecked()
+#     selected_methods['IHS'] = ui.checkBox_2.isChecked()
+#     selected_methods['GS'] = ui.checkBox_3.isChecked()
+#     selected_methods['BT'] = ui.checkBox_4.isChecked()
+#     selected_methods['WT'] = ui.checkBox_5.isChecked()
+#     selected_methods['SR'] = ui.checkBox_6.isChecked()
+#     selection_methods_text = json.dumps(selected_methods)
+#     ui.label.setText(ui.label.text() + selection_methods_text + '\n')
+#
+#
+# ui.pushButton.clicked.connect(on_click)

@@ -42,6 +42,7 @@ def sam_metric(result_high_resolution_image, original_high_resolution_image):
     except ValueError:
         print("Соотношение сторон изображений, поданных на вход функции, не совпадает")
 
+
 def scc_metric(result_high_resolution_image, original_high_resolution_image):
     try:
         if result_high_resolution_image.shape == original_high_resolution_image.shape:

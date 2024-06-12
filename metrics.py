@@ -21,6 +21,7 @@ def psnr_metric(result_high_resolution_image, original_high_resolution_image, dy
 
     except ValueError:
         print("Соотношение сторон изображений, поданных на вход функции, не совпадает")
+        return None
 
 
 def sam_metric(result_high_resolution_image, original_high_resolution_image):
@@ -41,6 +42,7 @@ def sam_metric(result_high_resolution_image, original_high_resolution_image):
 
     except ValueError:
         print("Соотношение сторон изображений, поданных на вход функции, не совпадает")
+        return None
 
 
 def scc_metric(result_high_resolution_image, original_high_resolution_image):
@@ -63,6 +65,7 @@ def scc_metric(result_high_resolution_image, original_high_resolution_image):
 
     except ValueError:
         print("Соотношение сторон изображений, поданных на вход функции, не совпадает")
+        return None
 
 
 def ergas_metric(result_high_resolution_image, original_high_resolution_image, scale=4):
@@ -89,3 +92,4 @@ def ergas_metric(result_high_resolution_image, original_high_resolution_image, s
 
     except ValueError:
         print("Соотношение сторон изображений, поданных на вход функции, не совпадает")
+        return None

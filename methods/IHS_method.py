@@ -30,5 +30,5 @@ def IHS_method(high_resolution_image, low_resolution_image):
 
     except ValueError:
         print("Соотношение сторон изображений, поданных на вход функции, не совпадает")
-
+        return None
 

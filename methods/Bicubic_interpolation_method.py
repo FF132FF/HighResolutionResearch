@@ -16,10 +16,11 @@ def bicubic_interpolation_method(high_resolution_image, low_resolution_image):
             print("Получившееся соотношение изображений: ", image_width_ratio)
 
         bicubic_interpolated_image = get_bicubic_interpolation(low_resolution_image, image_width_ratio)
-        bicubic_interpolated_image[bicubic_interpolated_image < 0] = 0
-        bicubic_interpolated_image[bicubic_interpolated_image > 1] = 1
 
-        return np.uint8(bicubic_interpolated_image * 255)
+        bicubic_interpolated_image[bicubic_interpolated_image < 0] = 0
+        bicubic_interpolated_image[bicubic_interpolated_image > 255] = 255
+
+        return bicubic_interpolated_image
 
     except ValueError:
         print("Соотношение сторон изображений, поданных на вход функции, не совпадает")

@@ -8,13 +8,7 @@ def Gram_Schmidt_method(high_resolution_image, low_resolution_image):
         low_resolution_image_height, low_resolution_image_width, low_resolution_image_channels = \
             low_resolution_image.shape
 
-        image_height_ratio = int(np.round(high_resolution_image_height / low_resolution_image_height))
-        image_width_ratio = int(np.round(high_resolution_image_width / low_resolution_image_width))
-
-        if image_height_ratio == image_width_ratio:
-            print("Получившееся соотношение изображений: ", image_width_ratio)
-
-        upsampled_low_resolution_image = get_interpolation_using_coefficient_23(low_resolution_image, image_width_ratio)
+        upsampled_low_resolution_image = low_resolution_image
 
         mean_values = np.mean(upsampled_low_resolution_image, axis=(0, 1))
         res_low_resolution_image = upsampled_low_resolution_image - mean_values
@@ -53,9 +47,9 @@ def Gram_Schmidt_method(high_resolution_image, low_resolution_image):
         Gram_Schmidt_image = Gram_Schmidt_image - np.mean(Gram_Schmidt_image, axis=(0, 1)) + mean_values
 
         Gram_Schmidt_image[Gram_Schmidt_image < 0] = 0
-        Gram_Schmidt_image[Gram_Schmidt_image > 1] = 1
+        Gram_Schmidt_image[Gram_Schmidt_image > 255] = 255
 
-        return np.uint8(Gram_Schmidt_image * 255)
+        return Gram_Schmidt_image
 
     except ValueError:
         print("Соотношение сторон изображений, поданных на вход функции, не совпадает")

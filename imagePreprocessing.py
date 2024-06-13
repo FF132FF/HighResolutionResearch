@@ -5,6 +5,13 @@ import matplotlib.pyplot as plt
 import tifffile
 import cv2
 
+# import tensorflow as tf
+# import tensorflow
+# from tensorflow import keras
+# from keras.preprocessing.image import img_to_array
+# from keras.preprocessing.image import array_to_img
+# from keras.preprocessing.image import load_img
+
 
 def open_tiff_image(file_path):
     try:
@@ -19,8 +26,8 @@ def open_tiff_image(file_path):
 
 def open_image(file_path):
     try:
-        image = Image.open(file_path)
-        numpy_data = asarray(image)
+        image = cv2.imread(file_path)
+        numpy_data = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         return numpy_data
 
     except Exception as e:
@@ -119,3 +126,4 @@ def visualize_images(image_path, title='изображения'):
     except Exception as e:
         print("Ошибка при отображении изображения:", e)
         return None
+

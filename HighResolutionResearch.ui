@@ -92,7 +92,7 @@ background-color: rgb(30, 31, 34);color: white</string>
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>1020</x>
@@ -107,7 +107,7 @@ background-color: rgb(30, 31, 34);color: white</string>
        <property name="title">
         <string>Нажмите на метод, который хотите применить к изображению</string>
        </property>
-       <widget class="QWidget" name="">
+       <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -121,7 +121,7 @@ background-color: rgb(30, 31, 34);color: white</string>
           <number>5</number>
          </property>
          <item>
-          <widget class="QPushButton" name="pushButton">
+          <widget class="QPushButton" name="pushButton_1">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(73, 62, 89);</string>
            </property>
@@ -131,7 +131,7 @@ background-color: rgb(30, 31, 34);color: white</string>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_6">
+          <widget class="QPushButton" name="pushButton_2">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(73, 62, 89);</string>
            </property>
@@ -141,7 +141,7 @@ background-color: rgb(30, 31, 34);color: white</string>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_2">
+          <widget class="QPushButton" name="pushButton_3">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(73, 62, 89);</string>
            </property>
@@ -151,7 +151,7 @@ background-color: rgb(30, 31, 34);color: white</string>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_5">
+          <widget class="QPushButton" name="pushButton_4">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(73, 62, 89);</string>
            </property>
@@ -161,7 +161,7 @@ background-color: rgb(30, 31, 34);color: white</string>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_4">
+          <widget class="QPushButton" name="pushButton_5">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(73, 62, 89);</string>
            </property>
@@ -171,7 +171,7 @@ background-color: rgb(30, 31, 34);color: white</string>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_3">
+          <widget class="QPushButton" name="pushButton_6">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(73, 62, 89);</string>
            </property>
@@ -293,7 +293,7 @@ background-color: rgb(30, 31, 34);color: white</string>
        <property name="title">
         <string>Выберите один из методов и алгоритм отображения артефактов</string>
        </property>
-       <widget class="QWidget" name="">
+       <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
           <x>10</x>

@@ -72,165 +72,149 @@ background-color: rgb(30, 31, 34);color: white</string>
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="label_4">
+   <widget class="QScrollArea" name="scrollArea">
     <property name="geometry">
      <rect>
       <x>20</x>
       <y>520</y>
-      <width>980</width>
-      <height>400</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color: white;
-background-color: rgb(30, 31, 34);color: white</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-    </property>
-   </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>1020</x>
-      <y>520</y>
-      <width>481</width>
+      <width>1201</width>
       <height>401</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="verticalLayout_2">
+    <property name="widgetResizable">
+     <bool>true</bool>
+    </property>
+    <widget class="QWidget" name="scrollAreaWidgetContents_2">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>1199</width>
+       <height>399</height>
+      </rect>
+     </property>
+     <widget class="QLabel" name="label_4">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>1201</width>
+        <height>891</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: white;
+background-color: rgb(30, 31, 34);color: white</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>1240</x>
+      <y>550</y>
+      <width>251</width>
+      <height>331</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_3">
      <item>
       <widget class="QGroupBox" name="groupBox">
        <property name="title">
-        <string>Нажмите на метод, который хотите применить к изображению</string>
+        <string>Выберите метод:</string>
        </property>
-       <widget class="QWidget" name="layoutWidget">
+       <widget class="QWidget" name="">
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>40</y>
-          <width>461</width>
-          <height>31</height>
+          <y>20</y>
+          <width>231</width>
+          <height>131</height>
          </rect>
         </property>
-        <layout class="QHBoxLayout" name="horizontalLayout">
-         <property name="spacing">
-          <number>5</number>
-         </property>
+        <layout class="QVBoxLayout" name="verticalLayout">
          <item>
-          <widget class="QPushButton" name="pushButton_1">
-           <property name="styleSheet">
-            <string notr="true">background-color: rgb(73, 62, 89);</string>
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <property name="spacing">
+            <number>5</number>
            </property>
-           <property name="text">
-            <string>Bicubic</string>
-           </property>
-          </widget>
+           <item>
+            <widget class="QPushButton" name="pushButton_1">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(73, 62, 89);</string>
+             </property>
+             <property name="text">
+              <string>Bicubic</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_2">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(73, 62, 89);</string>
+             </property>
+             <property name="text">
+              <string>IHS</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_3">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(73, 62, 89);</string>
+             </property>
+             <property name="text">
+              <string>GS</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_2">
-           <property name="styleSheet">
-            <string notr="true">background-color: rgb(73, 62, 89);</string>
-           </property>
-           <property name="text">
-            <string>IHS</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButton_3">
-           <property name="styleSheet">
-            <string notr="true">background-color: rgb(73, 62, 89);</string>
-           </property>
-           <property name="text">
-            <string>GS</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButton_4">
-           <property name="styleSheet">
-            <string notr="true">background-color: rgb(73, 62, 89);</string>
-           </property>
-           <property name="text">
-            <string>Brovey</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButton_5">
-           <property name="styleSheet">
-            <string notr="true">background-color: rgb(73, 62, 89);</string>
-           </property>
-           <property name="text">
-            <string>Wavelet</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButton_6">
-           <property name="styleSheet">
-            <string notr="true">background-color: rgb(73, 62, 89);</string>
-           </property>
-           <property name="text">
-            <string>SR</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </widget>
-     </item>
-     <item>
-      <widget class="QGroupBox" name="groupBox_2">
-       <property name="title">
-        <string>Нажмите на способ отображения, который хотите применить к изображению</string>
-       </property>
-       <widget class="QWidget" name="layoutWidget">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>40</y>
-          <width>461</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
-         <property name="spacing">
-          <number>5</number>
-         </property>
-         <item>
-          <widget class="QPushButton" name="pushButton_7">
-           <property name="styleSheet">
-            <string notr="true">background-color: rgb(73, 62, 89);</string>
-           </property>
-           <property name="text">
-            <string>Минимаксное растяжение</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButton_8">
-           <property name="styleSheet">
-            <string notr="true">background-color: rgb(73, 62, 89);</string>
-           </property>
-           <property name="text">
-            <string>Нормализация</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButton_9">
-           <property name="styleSheet">
-            <string notr="true">background-color: rgb(73, 62, 89);</string>
-           </property>
-           <property name="text">
-            <string>Эквализация</string>
-           </property>
-          </widget>
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <item>
+            <widget class="QPushButton" name="pushButton_4">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(73, 62, 89);</string>
+             </property>
+             <property name="text">
+              <string>Brovey</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_5">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(73, 62, 89);</string>
+             </property>
+             <property name="text">
+              <string>Wavelet</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_6">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(73, 62, 89);</string>
+             </property>
+             <property name="text">
+              <string>SR</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
         </layout>
        </widget>
@@ -239,33 +223,20 @@ background-color: rgb(30, 31, 34);color: white</string>
      <item>
       <widget class="QGroupBox" name="groupBox_3">
        <property name="title">
-        <string>Нажмите на способ отображения статистики, который хотите проанализировать</string>
+        <string>Выберите инструмент:</string>
        </property>
-       <widget class="QWidget" name="layoutWidget_2">
+       <widget class="QWidget" name="">
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>40</y>
-          <width>461</width>
-          <height>31</height>
+          <y>20</y>
+          <width>231</width>
+          <height>131</height>
          </rect>
         </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_3">
-         <property name="spacing">
-          <number>5</number>
-         </property>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
-          <widget class="QPushButton" name="pushButton_10">
-           <property name="styleSheet">
-            <string notr="true">background-color: rgb(73, 62, 89);</string>
-           </property>
-           <property name="text">
-            <string>Построить гистограммы</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButton_11">
+          <widget class="QPushButton" name="pushButton_7">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(73, 62, 89);</string>
            </property>
@@ -275,116 +246,34 @@ background-color: rgb(30, 31, 34);color: white</string>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_12">
+          <widget class="QPushButton" name="pushButton_8">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(73, 62, 89);</string>
            </property>
            <property name="text">
-            <string>Вернуть изображение</string>
+            <string>Отобразить артефакты</string>
            </property>
           </widget>
          </item>
-        </layout>
-       </widget>
-      </widget>
-     </item>
-     <item>
-      <widget class="QGroupBox" name="groupBox_4">
-       <property name="title">
-        <string>Выберите один из методов и алгоритм отображения артефактов</string>
-       </property>
-       <widget class="QWidget" name="layoutWidget">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>20</y>
-          <width>461</width>
-          <height>71</height>
-         </rect>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout">
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_5">
-           <item>
-            <widget class="QCheckBox" name="checkBox">
-             <property name="text">
-              <string>Bicubic</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QCheckBox" name="checkBox_2">
-             <property name="text">
-              <string>IHS</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QCheckBox" name="checkBox_3">
-             <property name="text">
-              <string>GS</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QCheckBox" name="checkBox_4">
-             <property name="text">
-              <string>Brovey</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QCheckBox" name="checkBox_5">
-             <property name="text">
-              <string>Wavelet</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QCheckBox" name="checkBox_6">
-             <property name="text">
-              <string>SR</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
+          <widget class="QPushButton" name="pushButton_9">
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(73, 62, 89);</string>
+           </property>
+           <property name="text">
+            <string>Применить эквализацию</string>
+           </property>
+          </widget>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_4">
-           <property name="spacing">
-            <number>5</number>
+          <widget class="QPushButton" name="pushButton_10">
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(73, 62, 89);</string>
            </property>
-           <item>
-            <widget class="QPushButton" name="pushButton_13">
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(73, 62, 89);</string>
-             </property>
-             <property name="text">
-              <string>Лаплассиан</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="pushButton_14">
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(73, 62, 89);</string>
-             </property>
-             <property name="text">
-              <string>Кени</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="pushButton_15">
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(73, 62, 89);</string>
-             </property>
-             <property name="text">
-              <string>Абсолютная разница</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
+           <property name="text">
+            <string>Вернуть изображения</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>

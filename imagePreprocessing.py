@@ -1,38 +1,5 @@
 import numpy as np
-from numpy import asarray
-from PIL import Image
-import matplotlib.pyplot as plt
-import tifffile
 import cv2
-
-# import tensorflow as tf
-# import tensorflow
-# from tensorflow import keras
-# from keras.preprocessing.image import img_to_array
-# from keras.preprocessing.image import array_to_img
-# from keras.preprocessing.image import load_img
-
-
-def open_tiff_image(file_path):
-    try:
-        image = tifffile.imread(file_path)
-        numpy_data = asarray(image)
-        return numpy_data
-
-    except Exception as e:
-        print("Ошибка при открытии изображения:", e)
-        return None
-
-
-def open_image(file_path):
-    try:
-        image = cv2.imread(file_path)
-        numpy_data = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        return numpy_data
-
-    except Exception as e:
-        print("Ошибка при открытии изображения:", e)
-        return None
 
 
 def min_max_stretch(image):
@@ -80,50 +47,4 @@ def equalize_image(image):
         print("Ошибка при применении эквализации:", e)
         return None
 
-
-def plot_histogram(image_path, title='изображения'):
-    try:
-        if image_path.lower().endswith('.tif'):
-            image = open_tiff_image(image_path)
-        else:
-            image = open_image(image_path)
-
-        fig, axes = plt.subplots(figsize=(12, 8))
-
-        axes[0].hist(image.flatten(), bins=256, range=[0, 256], color='r')
-        axes[0].set_title('Гистограмма ' + title)
-        axes[0].grid(True)
-
-        # plt.tight_layout()
-        # plt.show()
-        return fig
-
-    except Exception as e:
-        print("Ошибка при получении гистограммы:", e)
-        return None
-
-
-def visualize_images(image_path, title='изображения'):
-    try:
-        if image_path.lower().endswith('.tif'):
-            image = open_tiff_image(image_path)
-        else:
-            image = open_image(image_path)
-
-        fig, axes = plt.subplots(figsize=(12, 6))
-
-        im_before = axes[0].imshow(image)
-        axes[0].set_title('Отображение ' + title)
-        axes[0].axis('off')
-
-        cbar_before = fig.colorbar(im_before, ax=axes[0])
-        cbar_before.set_label('Значения пикселей')
-
-        # plt.tight_layout()
-        # plt.show()
-        return image
-
-    except Exception as e:
-        print("Ошибка при отображении изображения:", e)
-        return None
 

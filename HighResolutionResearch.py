@@ -4,22 +4,7 @@ from PyQt6.QtWidgets import (QApplication, QDialog, QMainWindow, QMessageBox, QF
                              QGraphicsRectItem, QGraphicsScene, QGraphicsView, QGraphicsPixmapItem, QSizePolicy, QLabel)
 from PyQt6.QtGui import QBrush, QPainter, QPen, QPixmap, QPolygonF, QImage, QDesktopServices
 from PyQt6.QtWidgets import QWidget
-
 from ui_HighResolutionResearch import Ui_MainWindow
-
-from PIL import Image
-from matplotlib.figure import Figure
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-import cv2 as cv
-import numpy as np
-import json
-import sys
-
-# import tensorflow as tf
-# import tensorflow
-# from tensorflow import keras
-# from keras.preprocessing.image import img_to_array
-# from keras.preprocessing.image import array_to_img
 
 from methods.Bicubic_interpolation_method import bicubic_interpolation_method
 from methods.IHS_method import IHS_method
@@ -27,7 +12,12 @@ from methods.Gram_Schmidt_method import Gram_Schmidt_method
 from methods.Brovey_transforms_method import Brovey_transforms_method
 from methods.Wavelet_transforms_method import Wavelet_transforms_method
 from imagePreprocessing import *
+from imageOpener import *
+from metricProcess import *
+from artifactDetection import *
 from utils import *
+import sys
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -37,6 +27,7 @@ class MainWindow(QMainWindow):
 
         self.image_paths = dict(HR='', LR='')
         self.method = ''
+        self.method_image = ''
 
         self.ui.action.triggered.connect(self.open_low_resolution_image)
         self.ui.action_2.triggered.connect(self.open_high_resolution_image)
@@ -46,6 +37,11 @@ class MainWindow(QMainWindow):
         self.ui.pushButton_3.clicked.connect(self.open_Gram_Schmidt_image)
         self.ui.pushButton_4.clicked.connect(self.open_Brovey_transforms_image)
         self.ui.pushButton_5.clicked.connect(self.open_Wavelet_transforms_image)
+
+        self.ui.pushButton_7.clicked.connect(self.get_metrics_for_method)
+        self.ui.pushButton_8.clicked.connect(self.get_artifact_detection)
+        self.ui.pushButton_9.clicked.connect(self.equalized_images)
+        self.ui.pushButton_10.clicked.connect(self.return_basic_view)
 
 
     def open_low_resolution_image(self):
@@ -95,6 +91,7 @@ class MainWindow(QMainWindow):
         if self.method == 'Bicubic_interpolation':
             bicubic_interpolation_image = bicubic_interpolation_method(high_resolution_image, low_resolution_image)
             bicubic_interpolation_minmax = min_max_stretch(bicubic_interpolation_image)
+            self.method_image = bicubic_interpolation_minmax
 
             cv.imwrite('bicubic_interpolation_minmax.jpg', bicubic_interpolation_minmax)
             self.ui.pixmap = QPixmap('bicubic_interpolation_minmax.jpg')
@@ -103,6 +100,7 @@ class MainWindow(QMainWindow):
         elif self.method == 'IHS':
             IHS_image = IHS_method(high_resolution_transposed_red_channel, resized_low_resolution_image)
             IHS_minmax = min_max_stretch(IHS_image)
+            self.method_image = IHS_minmax
 
             cv.imwrite('IHS_minmax.jpg', IHS_minmax)
             self.ui.pixmap = QPixmap('IHS_minmax.jpg')
@@ -111,6 +109,7 @@ class MainWindow(QMainWindow):
             Gram_Schmidt_image = Gram_Schmidt_method(high_resolution_transposed_red_channel,
                                                      resized_low_resolution_image)
             Gram_Schmidt_minmax = min_max_stretch(Gram_Schmidt_image)
+            self.method_image = Gram_Schmidt_minmax
 
             cv.imwrite('Gram_Schmidt_minmax.jpg', Gram_Schmidt_minmax)
             self.ui.pixmap = QPixmap('Gram_Schmidt_minmax.jpg')
@@ -119,6 +118,7 @@ class MainWindow(QMainWindow):
             Brovey_transforms_image = Brovey_transforms_method(high_resolution_transposed_red_channel,
                                                                resized_low_resolution_image)
             Brovey_transforms_minmax = min_max_stretch(Brovey_transforms_image)
+            self.method_image = Brovey_transforms_minmax
 
             cv.imwrite('Brovey_transforms_minmax.jpg', Brovey_transforms_minmax)
             self.ui.pixmap = QPixmap('Brovey_transforms_minmax.jpg')
@@ -127,6 +127,7 @@ class MainWindow(QMainWindow):
             Wavelet_transforms_image = Wavelet_transforms_method(high_resolution_transposed_red_channel,
                                                                  resized_low_resolution_image)
             Wavelet_transforms_minmax = min_max_stretch(Wavelet_transforms_image)
+            self.method_image = Wavelet_transforms_minmax
 
             cv.imwrite('Wavelet_transforms_minmax.jpg', Wavelet_transforms_minmax)
             self.ui.pixmap = QPixmap('Wavelet_transforms_minmax.jpg')
@@ -160,27 +161,140 @@ class MainWindow(QMainWindow):
         self.method = 'Wavelet_transforms'
         self.main_method_selection_algorithm()
 
+    def get_metrics_for_method(self):
+        high_resolution_image = open_image(self.image_paths['HR'])
+        low_resolution_image = open_image(self.image_paths['LR'])
+
+        high_resolution_transposed_red_channel = high_resolution_image[:, :, 0]
+        high_resolution_transposed_red_channel = np.expand_dims(high_resolution_transposed_red_channel, -1)
+
+        resized_low_resolution_image = cv2.resize(low_resolution_image, (480, 480))
+        high_resolution_minmax = min_max_stretch(high_resolution_image)
+
+        bicubic_interpolation_image = bicubic_interpolation_method(high_resolution_image, low_resolution_image)
+        bicubic_interpolation_minmax = min_max_stretch(bicubic_interpolation_image)
+
+        IHS_image = IHS_method(high_resolution_transposed_red_channel, resized_low_resolution_image)
+        IHS_minmax = min_max_stretch(IHS_image)
+
+        Gram_Schmidt_image = Gram_Schmidt_method(high_resolution_transposed_red_channel,
+                                                 resized_low_resolution_image)
+        Gram_Schmidt_minmax = min_max_stretch(Gram_Schmidt_image)
+
+        Brovey_transforms_image = Brovey_transforms_method(high_resolution_transposed_red_channel,
+                                                           resized_low_resolution_image)
+        Brovey_transforms_minmax = min_max_stretch(Brovey_transforms_image)
+
+        Wavelet_transforms_image = Wavelet_transforms_method(high_resolution_transposed_red_channel,
+                                                             resized_low_resolution_image)
+        Wavelet_transforms_minmax = min_max_stretch(Wavelet_transforms_image)
+
+        metrics_table = metrics_report_of_method(high_resolution_minmax, bicubic_interpolation_minmax, IHS_minmax, Gram_Schmidt_minmax, Brovey_transforms_minmax, Wavelet_transforms_minmax)
+        self.ui.label_4.setText(self.ui.label_4.text() + metrics_table + '\n')
+
+
+    def equalized_images(self):
+        low_res_img = open_image(self.image_paths['LR'])
+        high_res_img = open_image(self.image_paths['HR'])
+
+        ezualized_low_res_img = equalize_image(low_res_img)
+        ezualized_high_res_img = equalize_image(high_res_img)
+        equalized_method_img = equalize_image(self.method_image)
+
+        cv.imwrite('ezualized_low_res_img.jpg', ezualized_low_res_img)
+        self.ui.pixmap = QPixmap('ezualized_low_res_img.jpg')
+        self.ui.label_1.setPixmap(self.ui.pixmap)
+        self.ui.label_1.setScaledContents(True)
+        self.ui.label_1.resize(480, 480)
+        self.ui.label_1.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.ui.label_1.show()
+
+        cv.imwrite('ezualized_high_res_img.jpg', ezualized_high_res_img)
+        self.ui.pixmap = QPixmap('ezualized_high_res_img.jpg')
+        self.ui.label_2.setPixmap(self.ui.pixmap)
+        self.ui.label_2.setScaledContents(True)
+        self.ui.label_2.resize(480, 480)
+        self.ui.label_2.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.ui.label_2.show()
+
+        cv.imwrite('equalized_method_img.jpg', equalized_method_img)
+        self.ui.pixmap = QPixmap('equalized_method_img.jpg')
+        self.ui.label_3.setPixmap(self.ui.pixmap)
+        self.ui.label_3.setScaledContents(True)
+        self.ui.label_3.resize(480, 480)
+        self.ui.label_3.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.ui.label_3.show()
+
+    def get_artifact_detection(self):
+        high_res_img = open_image(self.image_paths['HR'])
+        high_res_img = min_max_stretch(high_res_img)
+        method_img = self.method_image
+
+        result = detect_artifacts_k(method_img, high_res_img)
+
+        edges = result[0]
+        HR_edges = result[1]
+        edges_difference = result[2]
+
+        cv.imwrite('edges.jpg', edges)
+        self.ui.pixmap = QPixmap('edges.jpg')
+        self.ui.label_1.setPixmap(self.ui.pixmap)
+        self.ui.label_1.setScaledContents(True)
+        self.ui.label_1.resize(480, 480)
+        self.ui.label_1.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.ui.label_1.show()
+
+        cv.imwrite('HR_edges.jpg', HR_edges)
+        self.ui.pixmap = QPixmap('HR_edges.jpg')
+        self.ui.label_2.setPixmap(self.ui.pixmap)
+        self.ui.label_2.setScaledContents(True)
+        self.ui.label_2.resize(480, 480)
+        self.ui.label_2.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.ui.label_2.show()
+
+        cv.imwrite('edges_difference.jpg', edges_difference)
+        self.ui.pixmap = QPixmap('edges_difference.jpg')
+        self.ui.label_3.setPixmap(self.ui.pixmap)
+        self.ui.label_3.setScaledContents(True)
+        self.ui.label_3.resize(480, 480)
+        self.ui.label_3.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.ui.label_3.show()
+
+    def return_basic_view(self):
+        low_res_img = open_image(self.image_paths['LR'])
+        low_res_img = min_max_stretch(low_res_img)
+        high_res_img = open_image(self.image_paths['HR'])
+        high_res_img = min_max_stretch(high_res_img)
+        method_img = self.method_image
+
+        cv.imwrite('low_res_img.jpg', low_res_img)
+        self.ui.pixmap = QPixmap('low_res_img.jpg')
+        self.ui.label_1.setPixmap(self.ui.pixmap)
+        self.ui.label_1.setScaledContents(True)
+        self.ui.label_1.resize(480, 480)
+        self.ui.label_1.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.ui.label_1.show()
+
+        cv.imwrite('high_res_img.jpg', high_res_img)
+        self.ui.pixmap = QPixmap('high_res_img.jpg')
+        self.ui.label_2.setPixmap(self.ui.pixmap)
+        self.ui.label_2.setScaledContents(True)
+        self.ui.label_2.resize(480, 480)
+        self.ui.label_2.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.ui.label_2.show()
+
+        cv.imwrite('method_img.jpg', method_img)
+        self.ui.pixmap = QPixmap('method_img.jpg')
+        self.ui.label_3.setPixmap(self.ui.pixmap)
+        self.ui.label_3.setScaledContents(True)
+        self.ui.label_3.resize(480, 480)
+        self.ui.label_3.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.ui.label_3.show()
+
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     window = MainWindow()
     window.show()
     sys.exit(app.exec())
 
-
-# print(paths['LR'])
-# print(paths['HR'])
-#
-# selected_methods = dict(BI=False, IHS=False, GS=False, BT=False, WT=False, SR=False)
-#
-# def on_click():
-#     selected_methods['BI'] = ui.checkBox.isChecked()
-#     selected_methods['IHS'] = ui.checkBox_2.isChecked()
-#     selected_methods['GS'] = ui.checkBox_3.isChecked()
-#     selected_methods['BT'] = ui.checkBox_4.isChecked()
-#     selected_methods['WT'] = ui.checkBox_5.isChecked()
-#     selected_methods['SR'] = ui.checkBox_6.isChecked()
-#     selection_methods_text = json.dumps(selected_methods)
-#     ui.label.setText(ui.label.text() + selection_methods_text + '\n')
-#
-#
-# ui.pushButton.clicked.connect(on_click)

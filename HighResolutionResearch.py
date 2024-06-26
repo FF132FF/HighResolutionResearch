@@ -1,9 +1,7 @@
 from PyQt6 import QtCore
-from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import (QApplication, QDialog, QMainWindow, QMessageBox, QFileDialog, QWidgetAction, QMenuBar,
-                             QGraphicsRectItem, QGraphicsScene, QGraphicsView, QGraphicsPixmapItem, QSizePolicy, QLabel)
-from PyQt6.QtGui import QBrush, QPainter, QPen, QPixmap, QPolygonF, QImage, QDesktopServices
-from PyQt6.QtWidgets import QWidget
+from PyQt6.QtWidgets import (QApplication, QMainWindow, QFileDialog, QLabel)
+from PyQt6.QtGui import QPixmap
+
 from ui_HighResolutionResearch import Ui_MainWindow
 
 from methods.Bicubic_interpolation_method import bicubic_interpolation_method
@@ -37,7 +35,7 @@ class MainWindow(QMainWindow):
         self.ui.pushButton_3.clicked.connect(self.open_Gram_Schmidt_image)
         self.ui.pushButton_4.clicked.connect(self.open_Brovey_transforms_image)
         self.ui.pushButton_5.clicked.connect(self.open_Wavelet_transforms_image)
-
+        self.ui.pushButton_6.clicked.connect(self.open_Super_resolution_image)
         self.ui.pushButton_7.clicked.connect(self.get_metrics_for_method)
         self.ui.pushButton_8.clicked.connect(self.get_artifact_detection)
         self.ui.pushButton_9.clicked.connect(self.equalized_images)
@@ -52,6 +50,7 @@ class MainWindow(QMainWindow):
         cv.imwrite('low_resolution_minmax.jpg', low_resolution_minmax)
 
         if image_path:
+            self.ui.label_5.setText("Низкое пространственное разрешение")
             self.ui.label_1 = QLabel(self.ui.label_1)
             self.ui.pixmap = QPixmap('low_resolution_minmax.jpg')
             self.ui.label_1.setPixmap(self.ui.pixmap)
@@ -68,6 +67,7 @@ class MainWindow(QMainWindow):
         cv.imwrite('high_resolution_minmax.jpg', high_resolution_minmax)
         
         if image_path:
+            self.ui.label_6.setText("Высокое пространственное разрешение")
             self.ui.label_2 = QLabel(self.ui.label_2)
             self.ui.pixmap = QPixmap('high_resolution_minmax.jpg')
             self.ui.label_2.setPixmap(self.ui.pixmap)
@@ -88,7 +88,7 @@ class MainWindow(QMainWindow):
 
         self.ui.label_3 = QLabel(self.ui.label_3)
 
-        if self.method == 'Bicubic_interpolation':
+        if self.method == 'Бикубическая интерполяция':
             bicubic_interpolation_image = bicubic_interpolation_method(high_resolution_image, low_resolution_image)
             bicubic_interpolation_minmax = min_max_stretch(bicubic_interpolation_image)
             self.method_image = bicubic_interpolation_minmax
@@ -105,7 +105,7 @@ class MainWindow(QMainWindow):
             cv.imwrite('IHS_minmax.jpg', IHS_minmax)
             self.ui.pixmap = QPixmap('IHS_minmax.jpg')
 
-        elif self.method == 'Gram_Schmidt':
+        elif self.method == 'Gramm-Schmidt':
             Gram_Schmidt_image = Gram_Schmidt_method(high_resolution_transposed_red_channel,
                                                      resized_low_resolution_image)
             Gram_Schmidt_minmax = min_max_stretch(Gram_Schmidt_image)
@@ -114,7 +114,7 @@ class MainWindow(QMainWindow):
             cv.imwrite('Gram_Schmidt_minmax.jpg', Gram_Schmidt_minmax)
             self.ui.pixmap = QPixmap('Gram_Schmidt_minmax.jpg')
 
-        elif self.method == 'Brovey_transforms':
+        elif self.method == 'Brovey':
             Brovey_transforms_image = Brovey_transforms_method(high_resolution_transposed_red_channel,
                                                                resized_low_resolution_image)
             Brovey_transforms_minmax = min_max_stretch(Brovey_transforms_image)
@@ -123,7 +123,7 @@ class MainWindow(QMainWindow):
             cv.imwrite('Brovey_transforms_minmax.jpg', Brovey_transforms_minmax)
             self.ui.pixmap = QPixmap('Brovey_transforms_minmax.jpg')
 
-        elif self.method == 'Wavelet_transforms':
+        elif self.method == 'Wavelet':
             Wavelet_transforms_image = Wavelet_transforms_method(high_resolution_transposed_red_channel,
                                                                  resized_low_resolution_image)
             Wavelet_transforms_minmax = min_max_stretch(Wavelet_transforms_image)
@@ -132,33 +132,54 @@ class MainWindow(QMainWindow):
             cv.imwrite('Wavelet_transforms_minmax.jpg', Wavelet_transforms_minmax)
             self.ui.pixmap = QPixmap('Wavelet_transforms_minmax.jpg')
 
+        elif self.method == 'Super Resolution':
+            model_path, _ = QFileDialog.getOpenFileName(self, 'Open Model', '', 'Model File (*.h5)')
+            Super_Resolution_image = Gram_Schmidt_method(high_resolution_transposed_red_channel,
+                                                                 resized_low_resolution_image)
+            Super_Resolution_minmax = min_max_stretch(Super_Resolution_image)
+            self.method_image = Super_Resolution_minmax
+
+            cv.imwrite('Super_Resolution_minmax.jpg', Super_Resolution_minmax)
+            self.ui.pixmap = QPixmap('Super_Resolution_minmax.jpg')
+
         self.ui.label_3.setPixmap(self.ui.pixmap)
         self.ui.label_3.setScaledContents(True)
         self.ui.label_3.resize(480, 480)
         self.ui.label_3.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.ui.label_3.show()
 
+
     def open_bicubic_image(self):
-        self.method = 'Bicubic_interpolation'
+        self.ui.label_7.setText("Метод Бикубическая интерполяция")
+        self.method = 'Бикубическая интерполяция'
         self.main_method_selection_algorithm()
 
 
     def open_IHS_image(self):
+        self.ui.label_7.setText("Метод IHS")
         self.method = 'IHS'
         self.main_method_selection_algorithm()
 
 
     def open_Gram_Schmidt_image(self):
-        self.method = 'Gram_Schmidt'
+        self.method = 'Gramm-Schmidt'
+        self.ui.label_7.setText("Метод Gramm-Schmidt")
         self.main_method_selection_algorithm()
 
 
     def open_Brovey_transforms_image(self):
-        self.method = 'Brovey_transforms'
+        self.ui.label_7.setText("Метод Brovey")
+        self.method = 'Brovey'
         self.main_method_selection_algorithm()
 
     def open_Wavelet_transforms_image(self):
-        self.method = 'Wavelet_transforms'
+        self.ui.label_7.setText("Метод Wavelet")
+        self.method = 'Wavelet'
+        self.main_method_selection_algorithm()
+
+    def open_Super_resolution_image(self):
+        self.ui.label_7.setText("Метод Super Resolution")
+        self.method = 'Super Resolution'
         self.main_method_selection_algorithm()
 
     def get_metrics_for_method(self):
@@ -236,6 +257,7 @@ class MainWindow(QMainWindow):
         HR_edges = result[1]
         edges_difference = result[2]
 
+        self.ui.label_5.setText(f"Границы для метода: {self.method}")
         cv.imwrite('edges.jpg', edges)
         self.ui.pixmap = QPixmap('edges.jpg')
         self.ui.label_1.setPixmap(self.ui.pixmap)
@@ -244,6 +266,7 @@ class MainWindow(QMainWindow):
         self.ui.label_1.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.ui.label_1.show()
 
+        self.ui.label_6.setText(f"Границы для эталона с высоким разрешением")
         cv.imwrite('HR_edges.jpg', HR_edges)
         self.ui.pixmap = QPixmap('HR_edges.jpg')
         self.ui.label_2.setPixmap(self.ui.pixmap)
@@ -252,6 +275,7 @@ class MainWindow(QMainWindow):
         self.ui.label_2.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.ui.label_2.show()
 
+        self.ui.label_7.setText(f"Разница границ между эталоном и результатом работы метода")
         cv.imwrite('edges_difference.jpg', edges_difference)
         self.ui.pixmap = QPixmap('edges_difference.jpg')
         self.ui.label_3.setPixmap(self.ui.pixmap)

@@ -1,6 +1,4 @@
 import cv2
-import numpy as np
-import matplotlib.pyplot as plt
 
 
 def detect_artifacts_k(image, HR):

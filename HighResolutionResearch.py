@@ -1,8 +1,9 @@
 from PyQt6 import QtCore
-from PyQt6.QtWidgets import (QApplication, QMainWindow, QFileDialog, QLabel)
+from PyQt6.QtWidgets import (QApplication, QMainWindow, QFileDialog, QLabel, QDialog)
 from PyQt6.QtGui import QPixmap
 
 from ui_HighResolutionResearch import Ui_MainWindow
+from ui_DemensionAndChannelSelection import Ui_Dialog
 
 from methods.Bicubic_interpolation_method import bicubic_interpolation_method
 from methods.IHS_method import IHS_method
@@ -17,6 +18,26 @@ from utils import *
 import sys
 
 
+class DialogWindow(QDialog):
+    def __init__(self, parent=None):
+        super(DialogWindow, self).__init__(parent)
+        self.ui = Ui_Dialog()
+        self.ui.setupUi(self)
+        self.data = []
+        self.ui.pushButton.clicked.connect(self.select_channels)
+
+
+    def select_channels(self):
+        image_shape = self.ui.lineEdit.text()
+        k = self.ui.lineEdit_2.text()
+        first_channel = self.ui.comboBox.currentText()
+        second_channel = self.ui.comboBox_2.currentText()
+        third_channel = self.ui.comboBox_3.currentText()
+
+        self.data = [image_shape, k, first_channel, second_channel, third_channel]
+
+
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -29,6 +50,7 @@ class MainWindow(QMainWindow):
 
         self.ui.action.triggered.connect(self.open_low_resolution_image)
         self.ui.action_2.triggered.connect(self.open_high_resolution_image)
+        self.ui.action_3.triggered.connect(self.open_demension_n_channel_selection)
 
         self.ui.pushButton_1.clicked.connect(self.open_bicubic_image)
         self.ui.pushButton_2.clicked.connect(self.open_IHS_image)
@@ -40,6 +62,13 @@ class MainWindow(QMainWindow):
         self.ui.pushButton_8.clicked.connect(self.get_artifact_detection)
         self.ui.pushButton_9.clicked.connect(self.equalized_images)
         self.ui.pushButton_10.clicked.connect(self.return_basic_view)
+
+
+    def open_demension_n_channel_selection(self):
+        self.dialog_window = DialogWindow(self)
+
+        self.dialog_window.exec()
+
 
 
     def open_low_resolution_image(self):
@@ -291,6 +320,7 @@ class MainWindow(QMainWindow):
         high_res_img = min_max_stretch(high_res_img)
         method_img = self.method_image
 
+        self.ui.label_5.setText(f"Низкое пространственное разрешение")
         cv.imwrite('low_res_img.jpg', low_res_img)
         self.ui.pixmap = QPixmap('low_res_img.jpg')
         self.ui.label_1.setPixmap(self.ui.pixmap)
@@ -299,6 +329,7 @@ class MainWindow(QMainWindow):
         self.ui.label_1.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.ui.label_1.show()
 
+        self.ui.label_6.setText(f"Высокое пространственное разрешение")
         cv.imwrite('high_res_img.jpg', high_res_img)
         self.ui.pixmap = QPixmap('high_res_img.jpg')
         self.ui.label_2.setPixmap(self.ui.pixmap)
@@ -307,6 +338,7 @@ class MainWindow(QMainWindow):
         self.ui.label_2.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.ui.label_2.show()
 
+        self.ui.label_7.setText(f"Метод {self.method}")
         cv.imwrite('method_img.jpg', method_img)
         self.ui.pixmap = QPixmap('method_img.jpg')
         self.ui.label_3.setPixmap(self.ui.pixmap)

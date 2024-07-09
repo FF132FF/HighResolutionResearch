@@ -180,7 +180,7 @@ background-color: rgb(30, 31, 34);color: white</string>
     <property name="title">
      <string>Сохранение:</string>
     </property>
-    <widget class="QWidget" name="">
+    <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -391,7 +391,14 @@ background-color: rgb(30, 31, 34);color: white</string>
     <addaction name="action"/>
     <addaction name="action_2"/>
    </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>Настройка параметров изображения</string>
+    </property>
+    <addaction name="action_3"/>
+   </widget>
    <addaction name="menu"/>
+   <addaction name="menu_2"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="action">
@@ -402,6 +409,11 @@ background-color: rgb(30, 31, 34);color: white</string>
   <action name="action_2">
    <property name="text">
     <string>Открыть изображение с высоким пространственным разрешением</string>
+   </property>
+  </action>
+  <action name="action_3">
+   <property name="text">
+    <string>Размерность и выбор каналов</string>
    </property>
   </action>
  </widget>
